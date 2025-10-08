@@ -35,21 +35,16 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#e8f4f8] via-white to-[#f0f8ff]">
       {/* Header */}
-      <header className="py-6 md:py-10 px-4 md:px-8 border-b border-black/5 bg-white/50 backdrop-blur-sm">
-        <div className="max-w-[1400px] mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-3 md:gap-4">
-            <div className="relative w-10 h-10 md:w-12 md:h-12">
-              <Image
-                src="/logos/aicoustics-icon-black.svg"
-                alt="aicoustics logo"
-                fill
-                className="object-contain"
-              />
-            </div>
-            <div className="flex items-baseline gap-0">
-              <span className="text-2xl md:text-3xl font-bold tracking-tight">ai-coustics</span>
-            </div>
-            <span className="text-[9px] md:text-[10px] tracking-widest text-gray-600 ml-2 md:ml-3 hidden sm:inline">GENERATIVE AUDIO AI</span>
+      <header className="py-3 md:py-4 px-4 md:px-8 border-b border-black/5 bg-white/50 backdrop-blur-sm">
+        <div className="max-w-[1400px] mx-auto flex justify-center items-center">
+          <div className="relative h-8 md:h-10 w-auto">
+            <Image
+              src="/logos/aicoustics-wordmark-black.svg"
+              alt="ai-coustics"
+              width={200}
+              height={40}
+              className="object-contain h-full w-auto"
+            />
           </div>
         </div>
       </header>
