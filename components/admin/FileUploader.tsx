@@ -101,50 +101,52 @@ export default function FileUploader({
     }
   };
 
+  const sectionColor = type === 'audio' ? 'green' : 'cyan';
+
   return (
     <div className="space-y-4">
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded text-sm">
-          {error}
+        <div className="bg-red-900/30 border border-red-500/50 text-red-300 px-4 py-3 rounded-xl text-sm font-mono">
+          <span className="text-red-400">ERROR:</span> {error}
         </div>
       )}
 
       {success && (
-        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded text-sm">
-          {success}
+        <div className={`bg-${sectionColor}-900/30 border border-${sectionColor}-500/50 text-${sectionColor}-300 px-4 py-3 rounded-xl text-sm font-mono`}>
+          <span className={`text-${sectionColor}-400`}>SUCCESS:</span> {success}
         </div>
       )}
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Artifact Type
+          <label className={`block text-sm font-semibold text-${sectionColor}-300 mb-2 font-mono`}>
+            ARTIFACT_TYPE
           </label>
           <select
             value={artifactType}
             onChange={(e) => setArtifactType(e.target.value as ArtifactType)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`w-full px-3 py-2 bg-black/40 border border-${sectionColor}-500/30 rounded-lg text-${sectionColor}-100 focus:outline-none focus:ring-2 focus:ring-${sectionColor}-500 focus:border-transparent font-mono uppercase`}
           >
             {artifactTypes.map((type) => (
-              <option key={type} value={type}>
-                {type.charAt(0).toUpperCase() + type.slice(1)}
+              <option key={type} value={type} className="bg-gray-900">
+                {type.toUpperCase()}
               </option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Version Type
+          <label className={`block text-sm font-semibold text-${sectionColor}-300 mb-2 font-mono`}>
+            VERSION_TYPE
           </label>
           <select
             value={versionType}
             onChange={(e) => setVersionType(e.target.value as VersionType)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`w-full px-3 py-2 bg-black/40 border border-${sectionColor}-500/30 rounded-lg text-${sectionColor}-100 focus:outline-none focus:ring-2 focus:ring-${sectionColor}-500 focus:border-transparent font-mono uppercase`}
           >
             {versionTypes.map((type) => (
-              <option key={type} value={type}>
-                {type.charAt(0).toUpperCase() + type.slice(1)}
+              <option key={type} value={type} className="bg-gray-900">
+                {type.toUpperCase()}
               </option>
             ))}
           </select>
@@ -152,19 +154,19 @@ export default function FileUploader({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          {type === 'audio' ? 'Audio File' : 'Spectrogram Image'}
+        <label className={`block text-sm font-semibold text-${sectionColor}-300 mb-2 font-mono`}>
+          {type === 'audio' ? 'AUDIO_FILE' : 'SPECTROGRAM_IMAGE'}
         </label>
         <input
           id={`${type}-file-input`}
           type="file"
           onChange={handleFileChange}
           accept={type === 'audio' ? 'audio/*' : 'image/*'}
-          className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+          className={`w-full text-sm text-${sectionColor}-200 font-mono file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-${sectionColor}-600 file:text-white hover:file:bg-${sectionColor}-500 file:transition-colors file:font-mono`}
         />
         {file && (
-          <p className="text-xs text-gray-500 mt-1">
-            Selected: {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
+          <p className={`text-xs text-${sectionColor}-400/70 mt-2 font-mono`}>
+            &gt; SELECTED: {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
           </p>
         )}
       </div>
@@ -172,9 +174,9 @@ export default function FileUploader({
       <button
         onClick={handleUpload}
         disabled={!file || uploading}
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        className={`w-full bg-gradient-to-r from-${sectionColor}-600 to-${sectionColor}-500 text-white py-3 px-4 rounded-lg font-bold hover:from-${sectionColor}-500 hover:to-${sectionColor}-400 focus:outline-none focus:ring-2 focus:ring-${sectionColor}-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-${sectionColor}-500/20 font-mono tracking-wider`}
       >
-        {uploading ? 'Uploading...' : 'Upload File'}
+        {uploading ? '[ UPLOADING... ]' : '[ UPLOAD_FILE ]'}
       </button>
     </div>
   );
