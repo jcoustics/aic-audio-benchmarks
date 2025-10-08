@@ -9,6 +9,8 @@ interface AudioPlayerProps {
 
 export default function AudioPlayer({ audioPath, title }: AudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -16,10 +18,17 @@ export default function AudioPlayer({ audioPath, title }: AudioPlayerProps) {
     if (!audio) return;
 
     const handleEnded = () => setIsPlaying(false);
+    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const handleLoadedMetadata = () => setDuration(audio.duration);
+
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
 
     return () => {
       audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
     };
   }, []);
 
@@ -36,9 +45,33 @@ export default function AudioPlayer({ audioPath, title }: AudioPlayerProps) {
     }
   };
 
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+    const audio = audioRef.current;
+    if (!audio || !duration) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = x / rect.width;
+    const newTime = percentage * duration;
+
+    audio.currentTime = newTime;
+    setCurrentTime(newTime);
+  };
+
+  const formatTime = (time: number) => {
+    if (!time || isNaN(time)) return '0:00';
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+
   return (
     <>
       <audio ref={audioRef} src={audioPath} preload="metadata" />
+
+      {/* Play/Pause Button */}
       <button
         onClick={togglePlay}
         className="absolute inset-0 flex items-center justify-center group/player hover:bg-black/10 transition-all duration-300"
@@ -57,6 +90,25 @@ export default function AudioPlayer({ audioPath, title }: AudioPlayerProps) {
           )}
         </div>
       </button>
+
+      {/* Progress Bar */}
+      <div className="absolute bottom-0 left-0 right-0 bg-black/40 backdrop-blur-sm p-3">
+        <div className="flex items-center gap-3">
+          <span className="text-white text-xs font-mono min-w-[35px]">{formatTime(currentTime)}</span>
+          <div
+            onClick={handleSeek}
+            className="flex-1 h-2 bg-white/20 rounded-full cursor-pointer group/progress hover:h-3 transition-all"
+          >
+            <div
+              className="h-full bg-gradient-to-r from-purple-500 to-orange-500 rounded-full relative transition-all"
+              style={{ width: `${progress}%` }}
+            >
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg opacity-0 group-hover/progress:opacity-100 transition-opacity"></div>
+            </div>
+          </div>
+          <span className="text-white text-xs font-mono min-w-[35px]">{formatTime(duration)}</span>
+        </div>
+      </div>
     </>
   );
 }
