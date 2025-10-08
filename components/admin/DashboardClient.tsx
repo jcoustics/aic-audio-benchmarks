@@ -70,8 +70,8 @@ export default function DashboardClient({
         {/* Example Uploaders - One for each example */}
         <div className="space-y-6">
           {examples.length === 0 ? (
-            <div className="border border-purple-500/30 bg-black/80 p-8 text-center">
-              <p className="text-purple-400/50 text-xs">
+            <div className="border border-green-500/30 bg-black/80 p-8 text-center">
+              <p className="text-green-400/50 text-xs">
                 No examples found. Create your first example above to get started.
               </p>
             </div>

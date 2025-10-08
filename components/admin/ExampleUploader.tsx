@@ -128,12 +128,37 @@ export default function ExampleUploader({
     return { audio, spec };
   };
 
+  const handleDeleteExample = async () => {
+    if (!confirm(`Delete example "${example.name}"? This will remove all associated audio and spectrograms.`)) {
+      return;
+    }
+
+    try {
+      const { error: deleteError } = await supabase
+        .from('examples')
+        .delete()
+        .eq('id', example.id);
+
+      if (deleteError) throw deleteError;
+
+      router.refresh();
+    } catch (err: any) {
+      setError(err.message || 'Failed to delete example');
+    }
+  };
+
   return (
-    <div className="border border-purple-500/30 bg-black/80 p-4 mb-6">
-      <div className="border-b border-purple-500/30 pb-2 mb-4">
-        <h3 className="text-sm text-purple-400">
+    <div className="border border-green-500/30 bg-black/80 p-4 mb-6">
+      <div className="border-b border-green-500/30 pb-2 mb-4 flex justify-between items-center">
+        <h3 className="text-sm text-green-400">
           &gt; /examples/{example.name.toLowerCase().replace(/\s+/g, '_')}
         </h3>
+        <button
+          onClick={handleDeleteExample}
+          className="text-xs text-red-400 border border-red-500/50 px-2 py-1 hover:bg-red-500/10 transition-colors"
+        >
+          [delete]
+        </button>
       </div>
 
       {error && (
@@ -143,7 +168,7 @@ export default function ExampleUploader({
       )}
 
       {success && (
-        <div className="border-l-2 border-purple-500 bg-purple-950/20 px-3 py-2 text-purple-400 text-xs mb-3">
+        <div className="border-l-2 border-green-500 bg-green-950/20 px-3 py-2 text-green-400 text-xs mb-3">
           success: {success}
         </div>
       )}
@@ -151,11 +176,11 @@ export default function ExampleUploader({
       {/* Upload Section */}
       <div className="mb-4 space-y-3">
         <div>
-          <label className="block text-purple-500 mb-1 text-xs">version:</label>
+          <label className="block text-green-500 mb-1 text-xs">version:</label>
           <select
             value={versionType}
             onChange={(e) => setVersionType(e.target.value as VersionType)}
-            className="w-full px-2 py-1 bg-black border border-purple-500/30 text-purple-400 focus:outline-none focus:border-purple-500 text-xs"
+            className="w-full px-2 py-1 bg-black border border-green-500/30 text-green-400 focus:outline-none focus:border-green-500 text-xs"
           >
             <option value="original">original</option>
             <option value="competitor">competitor</option>
@@ -165,7 +190,7 @@ export default function ExampleUploader({
 
         {versionType === 'competitor' && (
           <div>
-            <label className="block text-purple-500 mb-1 text-xs">
+            <label className="block text-green-500 mb-1 text-xs">
               competitor_name:
             </label>
             <input
@@ -173,14 +198,14 @@ export default function ExampleUploader({
               value={competitorName}
               onChange={(e) => setCompetitorName(e.target.value)}
               placeholder="e.g. ElevenLabs, Dolby.io"
-              className="w-full px-2 py-1 bg-black border border-purple-500/30 text-purple-400 focus:outline-none focus:border-purple-500 placeholder:text-purple-700 text-xs"
+              className="w-full px-2 py-1 bg-black border border-green-500/30 text-green-400 focus:outline-none focus:border-green-500 placeholder:text-green-700 text-xs"
             />
           </div>
         )}
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-purple-500 mb-1 text-xs">
+            <label className="block text-green-500 mb-1 text-xs">
               audio_file:
             </label>
             <input
@@ -188,12 +213,12 @@ export default function ExampleUploader({
               type="file"
               onChange={(e) => setAudioFile(e.target.files?.[0] || null)}
               accept="audio/*"
-              className="w-full text-xs text-purple-400 file:mr-2 file:py-1 file:px-2 file:border file:border-purple-500/50 file:bg-black file:text-purple-400 hover:file:bg-purple-500/10 file:text-[10px]"
+              className="w-full text-xs text-green-400 file:mr-2 file:py-1 file:px-2 file:border file:border-green-500/50 file:bg-black file:text-green-400 hover:file:bg-green-500/10 file:text-[10px]"
             />
           </div>
 
           <div>
-            <label className="block text-purple-500 mb-1 text-xs">
+            <label className="block text-green-500 mb-1 text-xs">
               spectrogram:
             </label>
             <input
@@ -201,7 +226,7 @@ export default function ExampleUploader({
               type="file"
               onChange={(e) => setSpectrogramFile(e.target.files?.[0] || null)}
               accept="image/*"
-              className="w-full text-xs text-purple-400 file:mr-2 file:py-1 file:px-2 file:border file:border-purple-500/50 file:bg-black file:text-purple-400 hover:file:bg-purple-500/10 file:text-[10px]"
+              className="w-full text-xs text-green-400 file:mr-2 file:py-1 file:px-2 file:border file:border-green-500/50 file:bg-black file:text-green-400 hover:file:bg-green-500/10 file:text-[10px]"
             />
           </div>
         </div>
@@ -209,7 +234,7 @@ export default function ExampleUploader({
         <button
           onClick={handleUpload}
           disabled={(!audioFile && !spectrogramFile) || uploading}
-          className="w-full border border-purple-500/50 bg-black text-purple-400 py-2 px-3 hover:bg-purple-500/10 focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-xs"
+          className="w-full border border-green-500/50 bg-black text-green-400 py-2 px-3 hover:bg-green-500/10 focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-xs"
         >
           {uploading ? 'uploading...' : '[ upload ]'}
         </button>
@@ -226,15 +251,15 @@ export default function ExampleUploader({
           return (
             <div
               key={version}
-              className="border border-purple-500/20 p-2 bg-black/50"
+              className="border border-green-500/20 p-2 bg-black/50"
             >
-              <div className="text-purple-400 mb-1 font-bold">
+              <div className="text-green-400 mb-1 font-bold">
                 {version === 'competitor' && competitorLabel ? competitorLabel : version}
               </div>
-              <div className={hasAudio ? 'text-green-500' : 'text-gray-600'}>
+              <div className={hasAudio ? 'text-cyan-400' : 'text-gray-600'}>
                 audio: {hasAudio ? '✓' : '✗'}
               </div>
-              <div className={hasSpec ? 'text-green-500' : 'text-gray-600'}>
+              <div className={hasSpec ? 'text-cyan-400' : 'text-gray-600'}>
                 spec: {hasSpec ? '✓' : '✗'}
               </div>
             </div>
