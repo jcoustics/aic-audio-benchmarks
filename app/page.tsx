@@ -1,6 +1,6 @@
 import SpectrogramCard from "@/components/SpectrogramCard";
 import { createClient } from "@/lib/supabase/server";
-import type { AudioSample, Spectrogram } from "@/lib/types/database";
+import type { AudioSample, Spectrogram, Example } from "@/lib/types/database";
 import Image from "next/image";
 
 export const revalidate = 0; // Disable caching for real-time updates
@@ -8,7 +8,12 @@ export const revalidate = 0; // Disable caching for real-time updates
 export default async function Home() {
   const supabase = await createClient();
 
-  // Fetch audio samples and spectrograms from Supabase
+  // Fetch examples, audio samples, and spectrograms from Supabase
+  const { data: examples } = await supabase
+    .from('examples')
+    .select('*')
+    .order('display_order', { ascending: true });
+
   const { data: audioSamples } = await supabase
     .from('audio_samples')
     .select('*');
@@ -17,25 +22,25 @@ export default async function Home() {
     .from('spectrograms')
     .select('*');
 
-  // Helper function to find URL by artifact and version type
-  const getAudioUrl = (artifact: string, version: string) => {
+  // Helper functions to get data for a specific example
+  const getAudioUrl = (exampleId: string, version: string) => {
     const sample = audioSamples?.find(
-      (s: AudioSample) => s.artifact_type === artifact && s.version_type === version
+      (s: AudioSample) => s.example_id === exampleId && s.version_type === version
     );
-    return sample?.file_url || `/audio/${artifact}-${version}.wav`;
+    return sample?.file_url || '';
   };
 
-  const getSpectrogramUrl = (artifact: string, version: string) => {
+  const getSpectrogramUrl = (exampleId: string, version: string) => {
     const spec = spectrograms?.find(
-      (s: Spectrogram) => s.artifact_type === artifact && s.version_type === version
+      (s: Spectrogram) => s.example_id === exampleId && s.version_type === version
     );
-    return spec?.image_url || `/spectrograms/${artifact}-${version}.png`;
+    return spec?.image_url || '';
   };
 
   // Get competitor name for display
-  const getCompetitorName = (artifact: string) => {
+  const getCompetitorName = (exampleId: string) => {
     const sample = audioSamples?.find(
-      (s: AudioSample) => s.artifact_type === artifact && s.version_type === 'competitor'
+      (s: AudioSample) => s.example_id === exampleId && s.version_type === 'competitor'
     );
     return sample?.competitor_name || 'Competitor';
   };
@@ -78,71 +83,35 @@ export default async function Home() {
           </p>
         </div>
 
-        {/* Distortion and Clipping Section */}
-        <section className="mb-12 md:mb-20">
-          <h2 className="text-xl md:text-2xl font-bold mb-6 md:mb-8 tracking-tight">Distortion and Clipping</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <SpectrogramCard
-              title="Original"
-              imagePath={getSpectrogramUrl('distortion', 'original')}
-              audioPath={getAudioUrl('distortion', 'original')}
-            />
-            <SpectrogramCard
-              title={getCompetitorName('distortion')}
-              imagePath={getSpectrogramUrl('distortion', 'competitor')}
-              audioPath={getAudioUrl('distortion', 'competitor')}
-            />
-            <SpectrogramCard
-              title="ai-coustics"
-              imagePath={getSpectrogramUrl('distortion', 'aicoustics')}
-              audioPath={getAudioUrl('distortion', 'aicoustics')}
-            />
+        {/* Dynamic Example Sections */}
+        {examples && examples.length > 0 ? (
+          examples.map((example: Example) => (
+            <section key={example.id} className="mb-12 md:mb-20">
+              <h2 className="text-xl md:text-2xl font-bold mb-6 md:mb-8 tracking-tight">{example.name}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <SpectrogramCard
+                  title="Original"
+                  imagePath={getSpectrogramUrl(example.id, 'original')}
+                  audioPath={getAudioUrl(example.id, 'original')}
+                />
+                <SpectrogramCard
+                  title={getCompetitorName(example.id)}
+                  imagePath={getSpectrogramUrl(example.id, 'competitor')}
+                  audioPath={getAudioUrl(example.id, 'competitor')}
+                />
+                <SpectrogramCard
+                  title="ai-coustics"
+                  imagePath={getSpectrogramUrl(example.id, 'aicoustics')}
+                  audioPath={getAudioUrl(example.id, 'aicoustics')}
+                />
+              </div>
+            </section>
+          ))
+        ) : (
+          <div className="text-center py-20">
+            <p className="text-gray-500">No examples available yet.</p>
           </div>
-        </section>
-
-        {/* Reverb and Room Section */}
-        <section className="mb-12 md:mb-20">
-          <h2 className="text-xl md:text-2xl font-bold mb-6 md:mb-8 tracking-tight">Reverb and Room</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <SpectrogramCard
-              title="Original"
-              imagePath={getSpectrogramUrl('reverb', 'original')}
-              audioPath={getAudioUrl('reverb', 'original')}
-            />
-            <SpectrogramCard
-              title={getCompetitorName('reverb')}
-              imagePath={getSpectrogramUrl('reverb', 'competitor')}
-              audioPath={getAudioUrl('reverb', 'competitor')}
-            />
-            <SpectrogramCard
-              title="ai-coustics"
-              imagePath={getSpectrogramUrl('reverb', 'aicoustics')}
-              audioPath={getAudioUrl('reverb', 'aicoustics')}
-            />
-          </div>
-        </section>
-
-        {/* Strong Bandlimited Signal Section */}
-        <section className="mb-12 md:mb-20">
-          <h2 className="text-xl md:text-2xl font-bold mb-6 md:mb-8 tracking-tight">Strong Bandlimited Signal</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <SpectrogramCard
-              title="Original"
-              imagePath={getSpectrogramUrl('bandlimit', 'original')}
-              audioPath={getAudioUrl('bandlimit', 'original')}
-            />
-            <SpectrogramCard
-              title={getCompetitorName('bandlimit')}
-              imagePath={getSpectrogramUrl('bandlimit', 'competitor')}
-              audioPath={getAudioUrl('bandlimit', 'competitor')}
-            />
-            <SpectrogramCard
-              title="ai-coustics"
-              imagePath={getSpectrogramUrl('bandlimit', 'aicoustics')}
-              audioPath={getAudioUrl('bandlimit', 'aicoustics')}
-            />
-          </div>
-        </section>
+        )}
       </main>
     </div>
   );

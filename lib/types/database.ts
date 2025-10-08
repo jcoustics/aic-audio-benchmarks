@@ -1,9 +1,16 @@
-export type ArtifactType = 'distortion' | 'reverb' | 'bandlimit';
 export type VersionType = 'original' | 'competitor' | 'aicoustics';
+
+export interface Example {
+  id: string;
+  name: string;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}
 
 export interface AudioSample {
   id: string;
-  artifact_type: ArtifactType;
+  example_id: string;
   version_type: VersionType;
   competitor_name?: string | null;
   file_url: string;
@@ -16,7 +23,7 @@ export interface AudioSample {
 
 export interface Spectrogram {
   id: string;
-  artifact_type: ArtifactType;
+  example_id: string;
   version_type: VersionType;
   competitor_name?: string | null;
   image_url: string;
@@ -30,6 +37,11 @@ export interface Spectrogram {
 export interface Database {
   public: {
     Tables: {
+      examples: {
+        Row: Example;
+        Insert: Omit<Example, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<Example, 'id' | 'created_at' | 'updated_at'>>;
+      };
       audio_samples: {
         Row: AudioSample;
         Insert: Omit<AudioSample, 'id' | 'created_at' | 'updated_at'>;

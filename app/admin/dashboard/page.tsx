@@ -15,24 +15,26 @@ export default async function AdminDashboard() {
     redirect('/admin/login');
   }
 
-  // Fetch existing audio samples and spectrograms
+  // Fetch examples, audio samples, and spectrograms
+  const { data: examples } = await supabase
+    .from('examples')
+    .select('*')
+    .order('display_order', { ascending: true });
+
   const { data: audioSamples } = await supabase
     .from('audio_samples')
-    .select('*')
-    .order('artifact_type', { ascending: true })
-    .order('version_type', { ascending: true });
+    .select('*');
 
   const { data: spectrograms } = await supabase
     .from('spectrograms')
-    .select('*')
-    .order('artifact_type', { ascending: true })
-    .order('version_type', { ascending: true });
+    .select('*');
 
   return (
     <DashboardClient
       user={user}
-      initialAudioSamples={audioSamples || []}
-      initialSpectrograms={spectrograms || []}
+      examples={examples || []}
+      audioSamples={audioSamples || []}
+      spectrograms={spectrograms || []}
     />
   );
 }
