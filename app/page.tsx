@@ -33,7 +33,7 @@ export default async function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f5d4d4] to-[#f8e4e4]">
+    <div className="min-h-screen bg-gradient-to-br from-[#e8f4f8] via-white to-[#f0f8ff]">
       {/* Header */}
       <header className="py-6 md:py-10 px-4 md:px-8 border-b border-black/5 bg-white/50 backdrop-blur-sm">
         <div className="max-w-[1400px] mx-auto flex justify-between items-center">
