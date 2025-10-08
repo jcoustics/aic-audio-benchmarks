@@ -11,8 +11,8 @@ interface SpectrogramCardProps {
 
 export default function SpectrogramCard({ title, imagePath, audioPath }: SpectrogramCardProps) {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-      <div className="relative aspect-[4/3] bg-gradient-to-br from-purple-900 via-pink-600 to-orange-500">
+    <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border border-gray-100">
+      <div className="relative aspect-[4/3] bg-gradient-to-br from-purple-900 via-pink-600 to-orange-500 overflow-hidden">
         {/* Spectrogram Image */}
         <Image
           src={imagePath}
@@ -24,8 +24,8 @@ export default function SpectrogramCard({ title, imagePath, audioPath }: Spectro
         {/* Audio Player Overlay */}
         <AudioPlayer audioPath={audioPath} title={title} />
       </div>
-      <div className="p-4 text-center">
-        <h3 className="font-semibold text-gray-900">{title}</h3>
+      <div className="p-5 text-center bg-gradient-to-b from-white to-gray-50">
+        <h3 className="font-bold text-gray-900 text-lg tracking-tight">{title}</h3>
       </div>
     </div>
   );
