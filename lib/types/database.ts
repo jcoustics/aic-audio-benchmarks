@@ -1,5 +1,13 @@
 export type VersionType = 'original' | 'competitor' | 'aicoustics';
 
+export interface PageSettings {
+  id: string;
+  page_title: string;
+  page_description: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Example {
   id: string;
   name: string;
@@ -37,6 +45,11 @@ export interface Spectrogram {
 export interface Database {
   public: {
     Tables: {
+      page_settings: {
+        Row: PageSettings;
+        Insert: Omit<PageSettings, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<PageSettings, 'id' | 'created_at' | 'updated_at'>>;
+      };
       examples: {
         Row: Example;
         Insert: Omit<Example, 'id' | 'created_at' | 'updated_at'>;

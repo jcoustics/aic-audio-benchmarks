@@ -8,7 +8,13 @@ export const revalidate = 0; // Disable caching for real-time updates
 export default async function Home() {
   const supabase = await createClient();
 
-  // Fetch examples, audio samples, and spectrograms from Supabase
+  // Fetch page settings, examples, audio samples, and spectrograms from Supabase
+  const { data: pageSettings } = await supabase
+    .from('page_settings')
+    .select('*')
+    .limit(1)
+    .single();
+
   const { data: examples } = await supabase
     .from('examples')
     .select('*')
@@ -66,20 +72,16 @@ export default async function Home() {
       <main className="max-w-[1400px] mx-auto px-4 md:px-8 py-8 md:py-16">
         {/* Title */}
         <div className="text-center mb-8 md:mb-12">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">Subtractive vs. Generative</h1>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+            {pageSettings?.page_title || 'Subtractive vs. Generative'}
+          </h1>
           <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-orange-500 mx-auto rounded-full"></div>
         </div>
 
         {/* Explanation Text */}
         <div className="bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg mb-12 md:mb-16 max-w-5xl mx-auto border border-white/50">
           <p className="text-sm md:text-base leading-relaxed text-gray-800 text-center">
-            These spectrograms show the time-frequency representations of audio signals, highlighting how different
-            audio artifacts manifest visually. Distortion adds excessive energy to certain frequencies (visible as
-            bright spots), codec artifacts cause small gaps in the frequency response (visible as vertical gaps
-            causing small gaps), reverb blurs the signal, and bandlimiting results in a complete loss of information in
-            specific frequency ranges. While current subtractive AI models have limited capabilities in addressing these
-            issues, our approach goes further: we reconstruct the missing information to deliver a studio-quality voice
-            recording.
+            {pageSettings?.page_description || 'These spectrograms show the time-frequency representations of audio signals...'}
           </p>
         </div>
 

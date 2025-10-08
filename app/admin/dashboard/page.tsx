@@ -15,7 +15,13 @@ export default async function AdminDashboard() {
     redirect('/admin/login');
   }
 
-  // Fetch examples, audio samples, and spectrograms
+  // Fetch page settings, examples, audio samples, and spectrograms
+  const { data: pageSettings } = await supabase
+    .from('page_settings')
+    .select('*')
+    .limit(1)
+    .single();
+
   const { data: examples } = await supabase
     .from('examples')
     .select('*')
@@ -32,6 +38,7 @@ export default async function AdminDashboard() {
   return (
     <DashboardClient
       user={user}
+      pageSettings={pageSettings || null}
       examples={examples || []}
       audioSamples={audioSamples || []}
       spectrograms={spectrograms || []}

@@ -2,12 +2,14 @@
 
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
-import type { AudioSample, Spectrogram, Example } from '@/lib/types/database';
+import type { AudioSample, Spectrogram, Example, PageSettings } from '@/lib/types/database';
 import ExampleManager from './ExampleManager';
 import ExampleUploader from './ExampleUploader';
+import PageSettingsEditor from './PageSettingsEditor';
 
 interface DashboardClientProps {
   user: any;
+  pageSettings: PageSettings | null;
   examples: Example[];
   audioSamples: AudioSample[];
   spectrograms: Spectrogram[];
@@ -15,6 +17,7 @@ interface DashboardClientProps {
 
 export default function DashboardClient({
   user,
+  pageSettings,
   examples,
   audioSamples,
   spectrograms,
@@ -64,6 +67,9 @@ export default function DashboardClient({
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Page Settings Editor */}
+        <PageSettingsEditor settings={pageSettings} />
+
         {/* Example Manager - Create New Examples */}
         <ExampleManager examples={examples} />
 
