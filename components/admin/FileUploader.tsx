@@ -101,62 +101,58 @@ export default function FileUploader({
     }
   };
 
+  const terminalColor = type === 'audio' ? 'green' : 'cyan';
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 text-xs">
       {error && (
-        <div className="bg-red-900/30 border border-red-500/50 text-red-300 px-4 py-3 rounded-xl text-sm font-mono">
-          <span className="text-red-400">ERROR:</span> {error}
+        <div className="border-l-2 border-red-500 bg-red-950/20 px-3 py-2 text-red-400">
+          error: {error}
         </div>
       )}
 
-      {success && type === 'audio' && (
-        <div className="bg-green-900/30 border border-green-500/50 text-green-300 px-4 py-3 rounded-xl text-sm font-mono">
-          <span className="text-green-400">SUCCESS:</span> {success}
+      {success && (
+        <div className={`border-l-2 border-${terminalColor}-500 bg-${terminalColor}-950/20 px-3 py-2 text-${terminalColor}-400`}>
+          success: {success}
         </div>
       )}
 
-      {success && type === 'spectrogram' && (
-        <div className="bg-cyan-900/30 border border-cyan-500/50 text-cyan-300 px-4 py-3 rounded-xl text-sm font-mono">
-          <span className="text-cyan-400">SUCCESS:</span> {success}
-        </div>
-      )}
-
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className={type === 'audio' ? 'block text-sm font-semibold text-green-300 mb-2 font-mono' : 'block text-sm font-semibold text-cyan-300 mb-2 font-mono'}>
-            ARTIFACT_TYPE
+          <label className={type === 'audio' ? 'block text-green-500 mb-1' : 'block text-cyan-500 mb-1'}>
+            artifact:
           </label>
           <select
             value={artifactType}
             onChange={(e) => setArtifactType(e.target.value as ArtifactType)}
             className={type === 'audio'
-              ? 'w-full px-3 py-2 bg-black/40 border border-green-500/30 rounded-lg text-green-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent font-mono uppercase'
-              : 'w-full px-3 py-2 bg-black/40 border border-cyan-500/30 rounded-lg text-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent font-mono uppercase'
+              ? 'w-full px-2 py-1 bg-black border border-green-500/30 text-green-400 focus:outline-none focus:border-green-500'
+              : 'w-full px-2 py-1 bg-black border border-cyan-500/30 text-cyan-400 focus:outline-none focus:border-cyan-500'
             }
           >
             {artifactTypes.map((type) => (
-              <option key={type} value={type} className="bg-gray-900">
-                {type.toUpperCase()}
+              <option key={type} value={type} className="bg-black">
+                {type}
               </option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className={type === 'audio' ? 'block text-sm font-semibold text-green-300 mb-2 font-mono' : 'block text-sm font-semibold text-cyan-300 mb-2 font-mono'}>
-            VERSION_TYPE
+          <label className={type === 'audio' ? 'block text-green-500 mb-1' : 'block text-cyan-500 mb-1'}>
+            version:
           </label>
           <select
             value={versionType}
             onChange={(e) => setVersionType(e.target.value as VersionType)}
             className={type === 'audio'
-              ? 'w-full px-3 py-2 bg-black/40 border border-green-500/30 rounded-lg text-green-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent font-mono uppercase'
-              : 'w-full px-3 py-2 bg-black/40 border border-cyan-500/30 rounded-lg text-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent font-mono uppercase'
+              ? 'w-full px-2 py-1 bg-black border border-green-500/30 text-green-400 focus:outline-none focus:border-green-500'
+              : 'w-full px-2 py-1 bg-black border border-cyan-500/30 text-cyan-400 focus:outline-none focus:border-cyan-500'
             }
           >
             {versionTypes.map((type) => (
-              <option key={type} value={type} className="bg-gray-900">
-                {type.toUpperCase()}
+              <option key={type} value={type} className="bg-black">
+                {type}
               </option>
             ))}
           </select>
@@ -164,8 +160,8 @@ export default function FileUploader({
       </div>
 
       <div>
-        <label className={type === 'audio' ? 'block text-sm font-semibold text-green-300 mb-2 font-mono' : 'block text-sm font-semibold text-cyan-300 mb-2 font-mono'}>
-          {type === 'audio' ? 'AUDIO_FILE' : 'SPECTROGRAM_IMAGE'}
+        <label className={type === 'audio' ? 'block text-green-500 mb-1' : 'block text-cyan-500 mb-1'}>
+          $ select file
         </label>
         <input
           id={`${type}-file-input`}
@@ -173,13 +169,13 @@ export default function FileUploader({
           onChange={handleFileChange}
           accept={type === 'audio' ? 'audio/*' : 'image/*'}
           className={type === 'audio'
-            ? 'w-full text-sm text-green-200 font-mono file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-green-600 file:text-white hover:file:bg-green-500 file:transition-colors file:font-mono'
-            : 'w-full text-sm text-cyan-200 font-mono file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-cyan-600 file:text-white hover:file:bg-cyan-500 file:transition-colors file:font-mono'
+            ? 'w-full text-xs text-green-400 file:mr-3 file:py-1 file:px-3 file:border file:border-green-500/50 file:bg-black file:text-green-400 hover:file:bg-green-500/10'
+            : 'w-full text-xs text-cyan-400 file:mr-3 file:py-1 file:px-3 file:border file:border-cyan-500/50 file:bg-black file:text-cyan-400 hover:file:bg-cyan-500/10'
           }
         />
         {file && (
-          <p className={type === 'audio' ? 'text-xs text-green-400/70 mt-2 font-mono' : 'text-xs text-cyan-400/70 mt-2 font-mono'}>
-            &gt; SELECTED: {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
+          <p className={type === 'audio' ? 'text-[10px] text-green-500/70 mt-1' : 'text-[10px] text-cyan-500/70 mt-1'}>
+            → {file.name} ({(file.size / 1024 / 1024).toFixed(2)}mb)
           </p>
         )}
       </div>
@@ -188,11 +184,11 @@ export default function FileUploader({
         onClick={handleUpload}
         disabled={!file || uploading}
         className={type === 'audio'
-          ? 'w-full bg-gradient-to-r from-green-600 to-green-500 text-white py-3 px-4 rounded-lg font-bold hover:from-green-500 hover:to-green-400 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-green-500/20 font-mono tracking-wider'
-          : 'w-full bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-3 px-4 rounded-lg font-bold hover:from-cyan-500 hover:to-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-cyan-500/20 font-mono tracking-wider'
+          ? 'w-full border border-green-500/50 bg-black text-green-400 py-2 px-3 hover:bg-green-500/10 focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed transition-colors'
+          : 'w-full border border-cyan-500/50 bg-black text-cyan-400 py-2 px-3 hover:bg-cyan-500/10 focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed transition-colors'
         }
       >
-        {uploading ? '[ UPLOADING... ]' : '[ UPLOAD_FILE ]'}
+        {uploading ? 'uploading...' : '[ upload ]'}
       </button>
     </div>
   );

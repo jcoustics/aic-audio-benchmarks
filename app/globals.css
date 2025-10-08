@@ -44,3 +44,13 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #84a4c4;
 }
+
+/* Terminal scanline animation */
+@keyframes scan {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}

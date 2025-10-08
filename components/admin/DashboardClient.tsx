@@ -36,50 +36,49 @@ export default function DashboardClient({
   const versionTypes: VersionType[] = ['original', 'subtractive', 'generative'];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
-      {/* Matrix-style animated background */}
-      <div className="fixed inset-0 opacity-10 pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00ff0020_1px,transparent_1px),linear-gradient(to_bottom,#00ff0020_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
-      </div>
+    <div className="min-h-screen bg-black text-green-400 font-mono">
+      {/* Scanline effect */}
+      <div className="fixed inset-0 pointer-events-none bg-[linear-gradient(transparent_50%,rgba(0,255,0,0.02)_50%)] bg-[length:100%_4px] animate-[scan_8s_linear_infinite]"></div>
 
-      {/* Header */}
-      <header className="relative bg-black/50 backdrop-blur-md border-b border-green-500/30 shadow-[0_0_20px_rgba(0,255,0,0.1)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      {/* Terminal Header */}
+      <header className="border-b border-green-500/50 bg-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-green-400 tracking-wider font-mono flex items-center gap-3">
-                <span className="text-green-500">&gt;</span> ADMIN_DASHBOARD
-                <span className="animate-pulse text-green-400">_</span>
-              </h1>
-              <p className="text-sm text-green-300/70 mt-2 font-mono">SYSTEM_USER: {user.email}</p>
+              <div className="text-green-400 text-sm mb-2">
+                <span className="text-green-500">root@aicoustics</span>:<span className="text-blue-400">~/admin</span>$ <span className="animate-pulse">█</span>
+              </div>
+              <p className="text-xs text-green-500/70">logged_in_as: {user.email}</p>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-3 text-xs">
               <a
                 href="/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-5 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-lg hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/20 font-mono text-sm"
+                className="px-4 py-2 border border-green-500/50 text-green-400 hover:bg-green-500/10 transition-colors"
               >
-                VIEW_DEMO
+                [view_demo]
               </a>
               <button
                 onClick={handleLogout}
-                className="px-5 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-500 hover:to-red-600 transition-all shadow-lg shadow-red-500/20 font-mono text-sm"
+                className="px-4 py-2 border border-red-500/50 text-red-400 hover:bg-red-500/10 transition-colors"
               >
-                LOGOUT
+                [logout]
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Audio Samples Section */}
-          <section className="bg-black/60 backdrop-blur-md rounded-2xl border border-green-500/30 p-6 shadow-[0_0_30px_rgba(0,255,0,0.1)] hover:shadow-[0_0_40px_rgba(0,255,0,0.2)] transition-shadow">
-            <h2 className="text-2xl font-bold text-green-400 mb-6 font-mono flex items-center gap-2">
-              <span className="text-green-500">◆</span> AUDIO_SAMPLES
-            </h2>
+          <section className="border border-green-500/30 bg-black/80 p-4">
+            <div className="border-b border-green-500/30 pb-2 mb-4">
+              <h2 className="text-sm text-green-400">
+                &gt; /audio_samples
+              </h2>
+            </div>
 
             <FileUploader
               type="audio"
@@ -88,24 +87,24 @@ export default function DashboardClient({
               onUploadComplete={handleUploadComplete}
             />
 
-            <div className="mt-8">
-              <h3 className="text-lg font-semibold text-green-300 mb-4 font-mono">UPLOADED_FILES</h3>
+            <div className="mt-6">
+              <div className="text-xs text-green-500 mb-2">$ ls uploaded/</div>
               {audioSamples.length === 0 ? (
-                <p className="text-green-400/50 text-sm font-mono">[ EMPTY ] No audio samples uploaded yet</p>
+                <p className="text-green-400/50 text-xs">ls: cannot access 'uploaded/': No such file or directory</p>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-1 text-xs">
                   {audioSamples.map((sample) => (
                     <div
                       key={sample.id}
-                      className="flex items-center justify-between p-4 bg-green-950/20 rounded-xl border border-green-500/20 hover:border-green-500/40 transition-all"
+                      className="flex items-center justify-between p-2 border-l-2 border-green-500/30 hover:border-green-500 hover:bg-green-500/5 transition-all"
                     >
                       <div className="flex-1">
-                        <p className="text-sm font-bold text-green-400 font-mono uppercase">
-                          {sample.artifact_type} - {sample.version_type}
-                        </p>
-                        <p className="text-xs text-green-300/60 font-mono mt-1">{sample.file_name}</p>
+                        <span className="text-green-400">
+                          {sample.artifact_type}_{sample.version_type}.wav
+                        </span>
+                        <span className="text-green-600 ml-4 text-[10px]">{sample.file_name}</span>
                       </div>
-                      <audio controls className="h-8">
+                      <audio controls className="h-6 scale-75">
                         <source src={sample.file_url} />
                       </audio>
                     </div>
@@ -116,10 +115,12 @@ export default function DashboardClient({
           </section>
 
           {/* Spectrograms Section */}
-          <section className="bg-black/60 backdrop-blur-md rounded-2xl border border-cyan-500/30 p-6 shadow-[0_0_30px_rgba(0,255,255,0.1)] hover:shadow-[0_0_40px_rgba(0,255,255,0.2)] transition-shadow">
-            <h2 className="text-2xl font-bold text-cyan-400 mb-6 font-mono flex items-center gap-2">
-              <span className="text-cyan-500">◆</span> SPECTROGRAMS
-            </h2>
+          <section className="border border-cyan-500/30 bg-black/80 p-4">
+            <div className="border-b border-cyan-500/30 pb-2 mb-4">
+              <h2 className="text-sm text-cyan-400">
+                &gt; /spectrograms
+              </h2>
+            </div>
 
             <FileUploader
               type="spectrogram"
@@ -128,25 +129,24 @@ export default function DashboardClient({
               onUploadComplete={handleUploadComplete}
             />
 
-            <div className="mt-8">
-              <h3 className="text-lg font-semibold text-cyan-300 mb-4 font-mono">UPLOADED_IMAGES</h3>
+            <div className="mt-6">
+              <div className="text-xs text-cyan-500 mb-2">$ ls images/</div>
               {spectrograms.length === 0 ? (
-                <p className="text-cyan-400/50 text-sm font-mono">[ EMPTY ] No spectrograms uploaded yet</p>
+                <p className="text-cyan-400/50 text-xs">ls: cannot access 'images/': No such file or directory</p>
               ) : (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   {spectrograms.map((spec) => (
-                    <div key={spec.id} className="space-y-2 group">
-                      <div className="relative overflow-hidden rounded-xl border border-cyan-500/30 hover:border-cyan-500/60 transition-all">
-                        <img
-                          src={spec.image_url}
-                          alt={`${spec.artifact_type} ${spec.version_type}`}
-                          className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div key={spec.id} className="border border-cyan-500/20 hover:border-cyan-500/50 transition-all">
+                      <img
+                        src={spec.image_url}
+                        alt={`${spec.artifact_type} ${spec.version_type}`}
+                        className="w-full h-24 object-cover opacity-80 hover:opacity-100 transition-opacity"
+                      />
+                      <div className="p-2 border-t border-cyan-500/20">
+                        <p className="text-[10px] text-cyan-400">
+                          {spec.artifact_type}_{spec.version_type}.png
+                        </p>
                       </div>
-                      <p className="text-xs font-bold text-cyan-400 font-mono uppercase">
-                        {spec.artifact_type} - {spec.version_type}
-                      </p>
                     </div>
                   ))}
                 </div>
