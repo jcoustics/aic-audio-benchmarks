@@ -43,8 +43,8 @@ export default function AdminLogin() {
       <div className="max-w-md w-full">
         <div className="bg-white rounded-lg shadow-md p-8">
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Admin Login</h1>
-            <p className="text-gray-600">Sign in to manage audio benchmarks</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Admin Portal</h1>
+            <p className="text-gray-600">Sign in to upload and manage audio benchmarks</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
