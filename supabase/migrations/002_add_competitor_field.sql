@@ -18,9 +18,11 @@ CREATE TYPE version_type AS ENUM ('original', 'competitor', 'aicoustics');
 ALTER TABLE public.audio_samples ALTER COLUMN version_type TYPE version_type USING version_type::text::version_type;
 ALTER TABLE public.spectrograms ALTER COLUMN version_type TYPE version_type USING version_type::text::version_type;
 
--- New unique constraint: one of each (artifact_type, version_type, competitor_name) combo
-ALTER TABLE public.audio_samples ADD CONSTRAINT audio_samples_unique_combo
-  UNIQUE (artifact_type, version_type, COALESCE(competitor_name, ''));
+-- Create unique indexes that treat NULL as a distinct value
+-- This allows multiple rows with the same artifact_type/version_type if competitor_name is NULL
+-- But only one row for each unique combination when competitor_name is specified
+CREATE UNIQUE INDEX audio_samples_unique_combo
+  ON public.audio_samples (artifact_type, version_type, competitor_name);
 
-ALTER TABLE public.spectrograms ADD CONSTRAINT spectrograms_unique_combo
-  UNIQUE (artifact_type, version_type, COALESCE(competitor_name, ''));
+CREATE UNIQUE INDEX spectrograms_unique_combo
+  ON public.spectrograms (artifact_type, version_type, competitor_name);
