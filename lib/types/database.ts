@@ -1,10 +1,11 @@
 export type ArtifactType = 'distortion' | 'reverb' | 'bandlimit';
-export type VersionType = 'original' | 'subtractive' | 'generative';
+export type VersionType = 'original' | 'competitor' | 'aicoustics';
 
 export interface AudioSample {
   id: string;
   artifact_type: ArtifactType;
   version_type: VersionType;
+  competitor_name?: string | null;
   file_url: string;
   file_name: string;
   file_size?: number;
@@ -17,6 +18,7 @@ export interface Spectrogram {
   id: string;
   artifact_type: ArtifactType;
   version_type: VersionType;
+  competitor_name?: string | null;
   image_url: string;
   file_name: string;
   file_size?: number;

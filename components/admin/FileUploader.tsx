@@ -20,6 +20,7 @@ export default function FileUploader({
   const [file, setFile] = useState<File | null>(null);
   const [artifactType, setArtifactType] = useState<ArtifactType>('distortion');
   const [versionType, setVersionType] = useState<VersionType>('original');
+  const [competitorName, setCompetitorName] = useState('');
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -41,6 +42,11 @@ export default function FileUploader({
       return;
     }
 
+    if (versionType === 'competitor' && !competitorName.trim()) {
+      setError('Please enter competitor name');
+      return;
+    }
+
     setUploading(true);
     setError('');
     setSuccess('');
@@ -48,7 +54,7 @@ export default function FileUploader({
     try {
       const bucket = type === 'audio' ? 'audio' : 'spectrograms';
       const folder = artifactType;
-      const fileName = `${versionType}-${Date.now()}-${file.name}`;
+      const fileName = `${versionType}-${competitorName || 'none'}-${Date.now()}-${file.name}`;
       const filePath = `${folder}/${fileName}`;
 
       // Upload file to storage
@@ -70,24 +76,23 @@ export default function FileUploader({
       const table = type === 'audio' ? 'audio_samples' : 'spectrograms';
       const urlField = type === 'audio' ? 'file_url' : 'image_url';
 
-      const { error: dbError } = await supabase.from(table).upsert(
-        {
-          artifact_type: artifactType,
-          version_type: versionType,
-          [urlField]: publicUrl,
-          file_name: file.name,
-          file_size: file.size,
-          mime_type: file.type,
-        },
-        {
-          onConflict: 'artifact_type,version_type',
-        }
-      );
+      const uploadData = {
+        artifact_type: artifactType,
+        version_type: versionType,
+        competitor_name: versionType === 'competitor' ? competitorName : null,
+        [urlField]: publicUrl,
+        file_name: file.name,
+        file_size: file.size,
+        mime_type: file.type,
+      };
+
+      const { error: dbError } = await supabase.from(table).upsert(uploadData);
 
       if (dbError) throw dbError;
 
       setSuccess('File uploaded successfully!');
       setFile(null);
+      setCompetitorName('');
 
       // Reset file input
       const fileInput = document.getElementById(`${type}-file-input`) as HTMLInputElement;
@@ -158,6 +163,24 @@ export default function FileUploader({
           </select>
         </div>
       </div>
+
+      {versionType === 'competitor' && (
+        <div>
+          <label className={type === 'audio' ? 'block text-green-500 mb-1' : 'block text-cyan-500 mb-1'}>
+            competitor_name:
+          </label>
+          <input
+            type="text"
+            value={competitorName}
+            onChange={(e) => setCompetitorName(e.target.value)}
+            placeholder="e.g. ElevenLabs, Dolby.io"
+            className={type === 'audio'
+              ? 'w-full px-2 py-1 bg-black border border-green-500/30 text-green-400 focus:outline-none focus:border-green-500 placeholder:text-green-700'
+              : 'w-full px-2 py-1 bg-black border border-cyan-500/30 text-cyan-400 focus:outline-none focus:border-cyan-500 placeholder:text-cyan-700'
+            }
+          />
+        </div>
+      )}
 
       <div>
         <label className={type === 'audio' ? 'block text-green-500 mb-1' : 'block text-cyan-500 mb-1'}>

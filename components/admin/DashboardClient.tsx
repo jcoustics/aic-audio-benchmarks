@@ -33,7 +33,7 @@ export default function DashboardClient({
   };
 
   const artifactTypes: ArtifactType[] = ['distortion', 'reverb', 'bandlimit'];
-  const versionTypes: VersionType[] = ['original', 'subtractive', 'generative'];
+  const versionTypes: VersionType[] = ['original', 'competitor', 'aicoustics'];
 
   return (
     <div className="min-h-screen bg-black text-green-400 font-mono">

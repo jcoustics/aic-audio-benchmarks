@@ -32,6 +32,14 @@ export default async function Home() {
     return spec?.image_url || `/spectrograms/${artifact}-${version}.png`;
   };
 
+  // Get competitor name for display
+  const getCompetitorName = (artifact: string) => {
+    const sample = audioSamples?.find(
+      (s: AudioSample) => s.artifact_type === artifact && s.version_type === 'competitor'
+    );
+    return sample?.competitor_name || 'Competitor';
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#e8f4f8] via-white to-[#f0f8ff]">
       {/* Header */}
@@ -80,14 +88,14 @@ export default async function Home() {
               audioPath={getAudioUrl('distortion', 'original')}
             />
             <SpectrogramCard
-              title="Subtractive (Dolby.io)"
-              imagePath={getSpectrogramUrl('distortion', 'subtractive')}
-              audioPath={getAudioUrl('distortion', 'subtractive')}
+              title={getCompetitorName('distortion')}
+              imagePath={getSpectrogramUrl('distortion', 'competitor')}
+              audioPath={getAudioUrl('distortion', 'competitor')}
             />
             <SpectrogramCard
-              title="Generative (aicoustics)"
-              imagePath={getSpectrogramUrl('distortion', 'generative')}
-              audioPath={getAudioUrl('distortion', 'generative')}
+              title="ai-coustics"
+              imagePath={getSpectrogramUrl('distortion', 'aicoustics')}
+              audioPath={getAudioUrl('distortion', 'aicoustics')}
             />
           </div>
         </section>
@@ -102,14 +110,14 @@ export default async function Home() {
               audioPath={getAudioUrl('reverb', 'original')}
             />
             <SpectrogramCard
-              title="Subtractive (Dolby.io)"
-              imagePath={getSpectrogramUrl('reverb', 'subtractive')}
-              audioPath={getAudioUrl('reverb', 'subtractive')}
+              title={getCompetitorName('reverb')}
+              imagePath={getSpectrogramUrl('reverb', 'competitor')}
+              audioPath={getAudioUrl('reverb', 'competitor')}
             />
             <SpectrogramCard
-              title="Generative (aicoustics)"
-              imagePath={getSpectrogramUrl('reverb', 'generative')}
-              audioPath={getAudioUrl('reverb', 'generative')}
+              title="ai-coustics"
+              imagePath={getSpectrogramUrl('reverb', 'aicoustics')}
+              audioPath={getAudioUrl('reverb', 'aicoustics')}
             />
           </div>
         </section>
@@ -124,14 +132,14 @@ export default async function Home() {
               audioPath={getAudioUrl('bandlimit', 'original')}
             />
             <SpectrogramCard
-              title="Subtractive (Dolby.io)"
-              imagePath={getSpectrogramUrl('bandlimit', 'subtractive')}
-              audioPath={getAudioUrl('bandlimit', 'subtractive')}
+              title={getCompetitorName('bandlimit')}
+              imagePath={getSpectrogramUrl('bandlimit', 'competitor')}
+              audioPath={getAudioUrl('bandlimit', 'competitor')}
             />
             <SpectrogramCard
-              title="Generative (aicoustics)"
-              imagePath={getSpectrogramUrl('bandlimit', 'generative')}
-              audioPath={getAudioUrl('bandlimit', 'generative')}
+              title="ai-coustics"
+              imagePath={getSpectrogramUrl('bandlimit', 'aicoustics')}
+              audioPath={getAudioUrl('bandlimit', 'aicoustics')}
             />
           </div>
         </section>
