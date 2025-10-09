@@ -17,7 +17,7 @@ export default function SpectrogramCard({ title, imagePath, audioPath }: Spectro
     <div className="group space-y-4">
       {/* Spectrogram Image (no play button) */}
       <div className="relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
-        <div className="relative w-full bg-black">
+        <div className="relative w-full bg-white p-4">
           {/* Spectrogram Image */}
           {hasImage && (
             <Image
