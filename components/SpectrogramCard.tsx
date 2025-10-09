@@ -15,7 +15,7 @@ export default function SpectrogramCard({ title, imagePath, audioPath }: Spectro
 
   return (
     <div className="group space-y-4">
-      {/* Spectrogram Image with Play Button */}
+      {/* Spectrogram Image (no play button) */}
       <div className="relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
         <div className="relative w-full bg-black">
           {/* Spectrogram Image */}
@@ -30,15 +30,8 @@ export default function SpectrogramCard({ title, imagePath, audioPath }: Spectro
               unoptimized
             />
           )}
-          {/* Play Button Overlay */}
-          {audioPath && audioPath.length > 0 && (
-            <AudioPlayer audioPath={audioPath} title={title} showProgressBar={false} />
-          )}
         </div>
       </div>
-
-      {/* Title */}
-      <h3 className="font-bold text-gray-900 text-lg text-center tracking-tight">{title}</h3>
 
       {/* Audio Player Bar */}
       {audioPath && audioPath.length > 0 && (
@@ -46,6 +39,9 @@ export default function SpectrogramCard({ title, imagePath, audioPath }: Spectro
           <AudioPlayer audioPath={audioPath} title={title} showPlayButton={false} />
         </div>
       )}
+
+      {/* Title */}
+      <h3 className="font-bold text-gray-900 text-lg text-center tracking-tight">{title}</h3>
     </div>
   );
 }
