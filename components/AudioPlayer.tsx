@@ -129,16 +129,11 @@ export default function AudioPlayer({
             </span>
             <div
               onClick={handleSeek}
-              className="flex-1 h-16 bg-gray-200 rounded-lg cursor-pointer group/progress overflow-hidden relative"
-              style={spectrogramPath ? {
-                backgroundImage: `url(${spectrogramPath})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-              } : {}}
+              className="flex-1 h-2 bg-gray-200 rounded-full cursor-pointer group/progress hover:h-2.5 transition-all relative"
             >
-              {/* Semi-transparent overlay for progress */}
+              {/* Progress bar */}
               <div
-                className="absolute inset-0 bg-gradient-to-r from-purple-500/80 to-orange-500/80 transition-all"
+                className="h-full bg-gradient-to-r from-purple-500 to-orange-500 rounded-full relative transition-all"
                 style={{ width: `${progress}%` }}
               >
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg opacity-0 group-hover/progress:opacity-100 transition-opacity"></div>

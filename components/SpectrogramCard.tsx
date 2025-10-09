@@ -40,7 +40,6 @@ export default function SpectrogramCard({ title, imagePath, audioPath }: Spectro
             audioPath={audioPath}
             title={title}
             showPlayButton={false}
-            spectrogramPath={imagePath}
           />
         </div>
       )}
