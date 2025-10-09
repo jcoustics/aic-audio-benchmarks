@@ -16,7 +16,7 @@ export default function SpectrogramCard({ title, imagePath, audioPath }: Spectro
   return (
     <div className="group space-y-4">
       {/* Spectrogram Image (no play button) */}
-      <div className="relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+      <div className="relative bg-white rounded-2xl overflow-hidden shadow hover:shadow-lg transition-all duration-300">
         <div className="relative w-full bg-white p-4">
           {/* Spectrogram Image */}
           {hasImage && (
@@ -35,7 +35,7 @@ export default function SpectrogramCard({ title, imagePath, audioPath }: Spectro
 
       {/* Audio Player Bar */}
       {audioPath && audioPath.length > 0 && (
-        <div className="bg-white rounded-xl shadow-md p-3">
+        <div className="bg-white rounded-xl shadow-sm p-3">
           <AudioPlayer
             audioPath={audioPath}
             title={title}
