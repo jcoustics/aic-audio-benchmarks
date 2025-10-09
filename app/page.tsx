@@ -87,9 +87,9 @@ export default async function Home() {
         {/* Dynamic Example Sections */}
         {examples && examples.length > 0 ? (
           examples.map((example: Example) => (
-            <section key={example.id} className="mb-12 md:mb-20">
-              <h2 className="text-xl md:text-2xl font-bold mb-6 md:mb-8 tracking-tight">{example.name}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <section key={example.id} className="mb-16 md:mb-20">
+              <h2 className="text-xl md:text-2xl font-bold mb-8 md:mb-10 tracking-tight">{example.name}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8">
                 <SpectrogramCard
                   title="Original"
                   imagePath={getSpectrogramUrl(example.id, 'original')}
