@@ -15,14 +15,14 @@ export default function SpectrogramCard({ title, imagePath, audioPath }: Spectro
 
   return (
     <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border border-gray-100">
-      <div className="relative aspect-[4/3] bg-gradient-to-br from-purple-900 via-pink-600 to-orange-500 overflow-hidden">
+      <div className="relative aspect-[16/9] bg-black overflow-hidden">
         {/* Spectrogram Image */}
         {hasImage && (
           <Image
             src={imagePath}
             alt={`${title} spectrogram`}
             fill
-            className="object-cover"
+            className="object-contain"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
             unoptimized
           />
