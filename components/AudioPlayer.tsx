@@ -129,14 +129,14 @@ export default function AudioPlayer({
             </span>
             <div
               onClick={handleSeek}
-              className="flex-1 h-2 bg-gray-200 rounded-full cursor-pointer group/progress hover:h-2.5 transition-all relative"
+              className="flex-1 h-1.5 bg-gray-300 rounded-full cursor-pointer group/progress relative"
             >
-              {/* Progress bar */}
+              {/* Progress knob */}
               <div
-                className="h-full bg-gradient-to-r from-purple-500 to-orange-500 rounded-full relative transition-all"
-                style={{ width: `${progress}%` }}
+                className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all"
+                style={{ left: `${progress}%` }}
               >
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg opacity-0 group-hover/progress:opacity-100 transition-opacity"></div>
+                <div className="w-3.5 h-3.5 bg-gray-700 rounded-full shadow-md hover:scale-110 transition-transform"></div>
               </div>
             </div>
             <span className={`text-xs font-mono min-w-[35px] ${showPlayButton ? 'text-white' : 'text-gray-600'}`}>
