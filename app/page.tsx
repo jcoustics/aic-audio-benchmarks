@@ -78,7 +78,7 @@ export default async function Home() {
         </div>
 
         {/* Explanation Text */}
-        <div className="bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-md mb-12 md:mb-16 max-w-5xl mx-auto border border-white/50">
+        <div className="bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-sm mb-12 md:mb-16 max-w-5xl mx-auto border border-white/50">
           <p className="text-sm md:text-base leading-relaxed text-gray-800 text-center">
             {pageSettings?.page_description || 'These spectrograms show the time-frequency representations of audio signals...'}
           </p>
