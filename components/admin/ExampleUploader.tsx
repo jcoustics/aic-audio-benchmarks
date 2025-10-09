@@ -240,8 +240,8 @@ export default function ExampleUploader({
         </button>
       </div>
 
-      {/* Status Grid */}
-      <div className="grid grid-cols-3 gap-2 text-[10px]">
+      {/* Status Grid with Previews */}
+      <div className="grid grid-cols-3 gap-3 text-[10px]">
         {(['original', 'competitor', 'aicoustics'] as VersionType[]).map((version) => {
           const { audio, spec } = getVersionData(version);
           const hasAudio = !!audio;
@@ -251,16 +251,46 @@ export default function ExampleUploader({
           return (
             <div
               key={version}
-              className="border border-green-500/20 p-2 bg-black/50"
+              className="border border-green-500/20 p-3 bg-black/50 space-y-2"
             >
-              <div className="text-green-400 mb-1 font-bold">
+              <div className="text-green-400 mb-2 font-bold text-xs">
                 {version === 'competitor' && competitorLabel ? competitorLabel : version}
               </div>
-              <div className={hasAudio ? 'text-cyan-400' : 'text-gray-600'}>
-                audio: {hasAudio ? '✓' : '✗'}
-              </div>
-              <div className={hasSpec ? 'text-cyan-400' : 'text-gray-600'}>
-                spec: {hasSpec ? '✓' : '✗'}
+
+              {/* Spectrogram Preview */}
+              {hasSpec && spec ? (
+                <div className="relative w-full aspect-video bg-black rounded overflow-hidden border border-green-500/30">
+                  <img
+                    src={spec.image_url}
+                    alt={`${version} spectrogram`}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              ) : (
+                <div className="w-full aspect-video bg-black/30 rounded border border-green-500/10 flex items-center justify-center">
+                  <span className="text-gray-600 text-[9px]">no spectrogram</span>
+                </div>
+              )}
+
+              {/* Audio Preview */}
+              {hasAudio && audio ? (
+                <audio controls className="w-full h-6 opacity-80 hover:opacity-100 transition-opacity">
+                  <source src={audio.file_url} />
+                </audio>
+              ) : (
+                <div className="w-full h-6 bg-black/30 rounded border border-green-500/10 flex items-center justify-center">
+                  <span className="text-gray-600 text-[9px]">no audio</span>
+                </div>
+              )}
+
+              {/* Status Indicators */}
+              <div className="flex gap-3 text-[9px] pt-1">
+                <div className={hasAudio ? 'text-cyan-400' : 'text-gray-600'}>
+                  audio: {hasAudio ? '✓' : '✗'}
+                </div>
+                <div className={hasSpec ? 'text-cyan-400' : 'text-gray-600'}>
+                  spec: {hasSpec ? '✓' : '✗'}
+                </div>
               </div>
             </div>
           );
