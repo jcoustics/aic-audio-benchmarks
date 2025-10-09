@@ -36,7 +36,12 @@ export default function SpectrogramCard({ title, imagePath, audioPath }: Spectro
       {/* Audio Player Bar */}
       {audioPath && audioPath.length > 0 && (
         <div className="bg-white rounded-xl shadow-md p-3">
-          <AudioPlayer audioPath={audioPath} title={title} showPlayButton={false} />
+          <AudioPlayer
+            audioPath={audioPath}
+            title={title}
+            showPlayButton={false}
+            spectrogramPath={imagePath}
+          />
         </div>
       )}
 
