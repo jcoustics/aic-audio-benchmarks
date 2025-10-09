@@ -45,7 +45,7 @@ export default function SpectrogramCard({ title, imagePath, audioPath }: Spectro
       )}
 
       {/* Title */}
-      <h3 className="font-bold text-gray-900 text-lg text-center tracking-tight">{title}</h3>
+      <h3 className="font-light text-gray-900 text-lg text-center tracking-tight">{title}</h3>
     </div>
   );
 }
