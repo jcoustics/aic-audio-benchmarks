@@ -69,16 +69,16 @@ export default async function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-[1400px] mx-auto px-4 md:px-8 py-8 md:py-16">
+      <main className="max-w-[1400px] mx-auto px-4 md:px-8 py-12 md:py-16">
         {/* Title */}
-        <div className="text-center mb-8 md:mb-12">
+        <div className="text-center mb-10 md:mb-12">
           <h1 className="text-2xl md:text-4xl lg:text-5xl font-light tracking-tight">
             {pageSettings?.page_title || 'Subtractive vs. Generative'}
           </h1>
         </div>
 
         {/* Explanation Text */}
-        <div className="bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-sm mb-12 md:mb-16 max-w-5xl mx-auto border border-white/50">
+        <div className="bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-sm mb-16 md:mb-16 max-w-5xl mx-auto border border-white/50">
           <p className="text-sm md:text-base leading-relaxed text-gray-800 text-center">
             {pageSettings?.page_description || 'These spectrograms show the time-frequency representations of audio signals...'}
           </p>
